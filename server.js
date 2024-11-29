@@ -13,10 +13,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 
-// envelopes route
+// Envelopes route
 const envelope = [];
 
-// Api create envelop
+// Api create envelope
 app.use('/api/envelop', (req, res, next) => {
     const {title, budget} = req.body;
 
@@ -26,14 +26,14 @@ app.use('/api/envelop', (req, res, next) => {
         });
     }
 
-    // new envelop
+    // New envelope
     const newEnvelop = {
         id: envelop + 1,
         title: title,
         budget: budget
     };
 
-    // push to envelope array
+    // Push to envelope array
     envelop.push(newEnvelop);
 
     res.status(201).json({
@@ -52,6 +52,7 @@ app.get('/api/envelope', (req, res, next) => {
 app.use("/",(req, res, next) => {
     res.send("Hello World");
 });
+
 // Server Start
 app.listen(PORT, (req, res, next) => {
     console.log(`Server is running on port ${PORT}`);
