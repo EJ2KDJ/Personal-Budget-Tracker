@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 const envelope = [];
 
 // Api create envelope
-app.use('/api/envelop', (req, res, next) => {
+app.post('/api/envelop', (req, res, next) => {
     const {title, budget} = req.body;
 
     if (!title || !budget) {
@@ -28,13 +28,13 @@ app.use('/api/envelop', (req, res, next) => {
 
     // New envelope
     const newEnvelop = {
-        id: envelop + 1,
+        id: envelope + 1,
         title: title,
         budget: budget
     };
 
     // Push to envelope array
-    envelop.push(newEnvelop);
+    envelope.push(newEnvelop);
 
     res.status(201).json({
         message: 'Envelop created',
@@ -46,6 +46,11 @@ app.use('/api/envelop', (req, res, next) => {
 // Get all envelopes
 app.get('/api/envelope', (req, res, next) => {
     res.json(envelope);
+});
+
+//Get specific envelope
+app.get('/api/envelope/:id', (req, res, next) => {
+    
 });
 
 // Get request hello
