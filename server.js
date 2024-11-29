@@ -50,7 +50,18 @@ app.get('/api/envelope', (req, res, next) => {
 
 //Get specific envelope
 app.get('/api/envelope/:id', (req, res, next) => {
-    
+    //Parse envelopeID
+    const envelopeID = Number(req.params.id);
+
+    //Find with the matching ID
+    const foundEnvelope = envelope.find(envelope => envelope.id === envelopeID);
+
+    // Error Handlig if envelope exists
+    if (foundEnvelope) {
+        res.json(foundEnvelope);
+    } else {
+        res.status(404).json({message: 'Envelope not found'});
+    }
 });
 
 // Get request hello
