@@ -65,21 +65,17 @@ app.get('/api/envelope', (req, res, next) => {
 
 //Get specific envelope
 app.get('/api/envelope/:id', findEnvelopeById, (req, res) => {
-    //Parse envelopeID
-    const envelopeID = Number(req.params.id);
-
-    //Find with the matching ID
-    const foundEnvelope = envelope.find(envelope => envelope.id === envelopeID);
+    res.json(req.foundEnvelope);
 });
 
 // Update envelope
 app.put("/api/envelope/:id", findEnvelopeById, (req, res) => {
     const envelopeToUpdate = req.foundEnvelope;
-    const { title, budget} = req.body;
+    const { title, budget, withdrawal} = req.body;
 
-    if (!title && !budget) {
+    if (!title && !budget && !withdrawal === undefined) {
         return res.status(400).json({
-            error: "must provide title or budget to update"
+            error: "must provide title, budget, or withdrawal amount to update"
         });
     }
 
@@ -89,6 +85,19 @@ app.put("/api/envelope/:id", findEnvelopeById, (req, res) => {
     if (budget) {
         envelopeToUpdate.budget = budget;
     }
+    if (withdrawal !== undefined) {
+        if(withdrawal <= 0) {
+            return res.status(400).json({
+                error: "Withdrawal amount must be greater than 0"
+            })
+        }
+        if(withdrawal > envelopeToUpdate.budget) {
+            return res.status(400).json({
+                error: "Insufficient budget for this withdrawal amount"
+            })
+        }
+    }
+
 
     res.json({
         message: "Envelope updates successfully",
