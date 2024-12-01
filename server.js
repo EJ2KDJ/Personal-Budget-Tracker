@@ -16,6 +16,21 @@ app.use(bodyParser.urlencoded({ extended: true}));
 // Envelopes route
 const envelope = [];
 
+
+// Middleware to check if envelope exists
+const findEnvelopeById = (req, res, next) => {
+    const envelopeID = Number(req.params.id);
+
+    const foundEnvelope = envelope.find(env => env.id === envelopeID);
+
+    if (!foundEnvelope) {
+        return res.status(404).json({message: 'Envelope not found'});
+    }
+
+    req.foundEnvelope = foundEnvelope;
+
+    next();
+}
 // Api create envelope
 app.post('/api/envelope', (req, res, next) => {
     const {title, budget} = req.body;
@@ -49,19 +64,17 @@ app.get('/api/envelope', (req, res, next) => {
 });
 
 //Get specific envelope
-app.get('/api/envelope/:id', (req, res, next) => {
+app.get('/api/envelope/:id', findEnvelopeById, (req, res) => {
     //Parse envelopeID
     const envelopeID = Number(req.params.id);
 
     //Find with the matching ID
     const foundEnvelope = envelope.find(envelope => envelope.id === envelopeID);
+});
 
-    // Error Handling if envelope exists
-    if (foundEnvelope) {
-        res.json(foundEnvelope);
-    } else {
-        res.status(404).json({message: 'Envelope not found'});
-    }
+// Update envelope
+app.put("/api/envelope/:id", findEnvelopeById, (req, res) => {
+    const envelopeID = req.params.id;
 });
 
 // Get request hello
