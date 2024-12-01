@@ -107,6 +107,16 @@ app.put("/api/envelope/:id", findEnvelopeById, (req, res) => {
     })
 });
 
+// Delete Envelope routes
+app.delete('/api/envelope/:id', findEnvelopeById, (req, res) => {
+    const cleanEnvArray = envelope.filter((env) => env !== req.foundEnvelope);
+
+    envelope.length = 0;
+    envelope.push(...cleanEnvArray);
+
+    res.status(204).send();
+})
+
 // Get request hello
 app.use("/",(req, res, next) => {
     res.send("Hello World");
