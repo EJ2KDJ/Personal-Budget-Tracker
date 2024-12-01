@@ -96,11 +96,13 @@ app.put("/api/envelope/:id", findEnvelopeById, (req, res) => {
                 error: "Insufficient budget for this withdrawal amount"
             })
         }
+
+        envelopeToUpdate.budget -= withdrawal;
     }
 
 
     res.json({
-        message: "Envelope updates successfully",
+        message: "Envelope updated successfully",
         envelope: envelopeToUpdate
     })
 });
