@@ -12,10 +12,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
-
 // Envelopes route
 const envelope = [];
-
 
 // Middleware to check if envelope exists
 const findEnvelopeById = (req, res, next) => {
@@ -31,6 +29,8 @@ const findEnvelopeById = (req, res, next) => {
 
     next();
 }
+
+
 // Api create envelope
 app.post('/api/envelope', (req, res, next) => {
     const {title, budget} = req.body;
@@ -74,7 +74,26 @@ app.get('/api/envelope/:id', findEnvelopeById, (req, res) => {
 
 // Update envelope
 app.put("/api/envelope/:id", findEnvelopeById, (req, res) => {
-    const envelopeID = req.params.id;
+    const envelopeToUpdate = req.foundEnvelope;
+    const { title, budget} = req.body;
+
+    if (!title && !budget) {
+        return res.status(400).json({
+            error: "must provide title or budget to update"
+        });
+    }
+
+    if (title) {
+        envelopeToUpdate.title = title;
+    }
+    if (budget) {
+        envelopeToUpdate.budget = budget;
+    }
+
+    res.json({
+        message: "Envelope updates successfully",
+        envelope: envelopeToUpdate
+    })
 });
 
 // Get request hello
