@@ -73,7 +73,7 @@ app.put("/api/envelope/:id", findEnvelopeById, (req, res) => {
     const envelopeToUpdate = req.foundEnvelope;
     const { title, budget, withdrawal} = req.body;
 
-    if (!title && !budget && !withdrawal === undefined) {
+    if (!title && budget === undefined && withdrawal === undefined) {
         return res.status(400).json({
             error: "must provide title, budget, or withdrawal amount to update"
         });
