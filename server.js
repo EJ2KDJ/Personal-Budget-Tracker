@@ -17,28 +17,28 @@ app.use(bodyParser.urlencoded({ extended: true}));
 const envelope = [];
 
 // Api create envelope
-app.post('/api/envelop', (req, res, next) => {
+app.post('/api/envelope', (req, res, next) => {
     const {title, budget} = req.body;
 
     if (!title || !budget) {
-        res.status(400).json({
+        return res.status(400).json({
             error: "Title and Budget required" 
         });
     }
 
     // New envelope
-    const newEnvelop = {
-        id: envelope + 1,
+    const newEnvelope = {
+        id: envelope.length + 1,
         title: title,
         budget: budget
     };
 
     // Push to envelope array
-    envelope.push(newEnvelop);
+    envelope.push(newEnvelope);
 
     res.status(201).json({
         message: 'Envelop created',
-        envelop: envelope
+        envelope: newEnvelope
     });
 });
 
@@ -56,7 +56,7 @@ app.get('/api/envelope/:id', (req, res, next) => {
     //Find with the matching ID
     const foundEnvelope = envelope.find(envelope => envelope.id === envelopeID);
 
-    // Error Handlig if envelope exists
+    // Error Handling if envelope exists
     if (foundEnvelope) {
         res.json(foundEnvelope);
     } else {
