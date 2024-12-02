@@ -117,6 +117,44 @@ app.delete('/api/envelope/:id', findEnvelopeById, (req, res) => {
     res.status(204).send();
 })
 
+//Post route for transferring one envelope to another
+app.post('/api/envelope/transfer/:from/:to', findEnvelopeById, (req, res) => {
+    const {from, to} = req.params;
+    const {transfer} = req.body;
+
+    //Validate transfer amount
+    if (!transfer || transfer <=0) {
+        return res.status(400).json({
+            error: "Valid transfer amount required"
+        });
+    }
+
+    const findEnvelopeFrom = envelope.filter((env) => env.title.toLowerCase() === from.title.toLowerCase());
+    const findEnvelopeTo = envelope.filter((env) => env.title.toLowerCase() === to.toLowerCase());
+
+    //Check if envelope titles exist
+    if (!findEnvelopeFrom || !findEnvelopeTo) {
+        return res.status(404).json({
+            error: "Envelope title does not exist"
+        });
+    }
+
+    //Check if amount is within envelope budget from transfer envelope
+    if (findEnvelopeFrom < amount) {
+        return res.status(400).json({
+            error: "Insufficient funds from transfer envelope"
+        });
+    }
+
+    findEnvelopeFrom.budget -= budget;
+    findEnvelopeTo.budget += budget;
+
+    res.json({
+        message: `Transfer from ${from} successfully transffered to ${to}`,
+        envelope: envelope
+    })
+});
+
 // Get request hello
 app.use("/",(req, res, next) => {
     res.send("Hello World");
