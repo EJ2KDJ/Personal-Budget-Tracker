@@ -52,7 +52,7 @@ app.post('/api/envelope', (req, res, next) => {
     envelope.push(newEnvelope);
 
     res.status(201).json({
-        message: 'Envelop created',
+        message: 'Envelope created',
         envelope: newEnvelope
     });
 });
@@ -129,8 +129,8 @@ app.post('/api/envelope/transfer/:from/:to', findEnvelopeById, (req, res) => {
         });
     }
 
-    const findEnvelopeFrom = envelope.filter((env) => env.title.toLowerCase() === from.title.toLowerCase());
-    const findEnvelopeTo = envelope.filter((env) => env.title.toLowerCase() === to.toLowerCase());
+    const findEnvelopeFrom = envelope.find((env) => env.title.toLowerCase() === from.title.toLowerCase());
+    const findEnvelopeTo = envelope.find((env) => env.title.toLowerCase() === to.toLowerCase());
 
     //Check if envelope titles exist
     if (!findEnvelopeFrom || !findEnvelopeTo) {
