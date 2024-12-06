@@ -13,7 +13,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
 // Envelopes route
-const envelope = [];
+const envelope = [
+    {
+        id: 1,
+        title: "Dinners",
+        budget: 500
+    },
+    {
+        id: 2,
+        title: "Grocery",
+        budget: 800
+    }
+];
+
 
 // Middleware to check if envelope exists
 const findEnvelopeById = (req, res, next) => {
