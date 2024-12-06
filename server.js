@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
-// Envelopes route
+// Envelopes route with preset envelopes for example
 const envelope = [
     {
         id: 1,
